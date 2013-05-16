@@ -34,6 +34,7 @@ server {
         if ($cachable = 1) {
             set $memcached_key nginx_foo.com$request_uri?$query_string;
             memcached_pass memcached;
+            add_header "X-MEMC-STATUS" "HIT";
         }
 
         error_page 404 502 504 405 = @php;
@@ -43,5 +44,6 @@ server {
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root/index.php;
         fastcgi_pass php;
+        add_header "X-MEMC-STATUS" "MISS";
     }
 }
