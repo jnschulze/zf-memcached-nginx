@@ -36,7 +36,6 @@ $cache = Zend_Cache::factory(new ZendExtra_Cache_Frontend_Page($frontendOptions)
                              new ZendExtra_Cache_Backend_RawMemcached());
                              
 $fc = Zend_Controller_Front::getInstance();
-$fc->setParam('disableOutputBuffering', true);
 $fc->registerPlugin(new ZendExtra_Controller_Plugin_PageCache($cache));
 ```
 
