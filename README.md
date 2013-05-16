@@ -6,7 +6,7 @@ Alternate implementation of Zend_Cache_Frontend_Page and Zend_Cache_Backend_Memc
 Allows your ZF app to cache the raw response to memcached (as opposed to the original Zend_Cache_* implementations which add some meta data as well), allowing nginx to serve subsequent requests directly from memcached, without employing PHP.
 
 ### Why should I want nginx to serve the cached stuff directly?
-Just see the benchmarks below.
+See the benchmarks below.
 
 ### How do I know if the response is served from memcache directly?
 Just add a custom header indicating the cache status. See the nginx example config for details.
