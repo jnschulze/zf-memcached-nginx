@@ -8,6 +8,8 @@ Allows your ZF app to cache the raw response to memcached (as opposed to the ori
 ### Why should I want nginx to serve the cached stuff directly?
 Just see the benchmarks below.
 
+### How do I know if the response is served from memcache directly?
+Just add a custom header indicating the cache status. See the nginx example config for details.
 
 ## Usage
 
