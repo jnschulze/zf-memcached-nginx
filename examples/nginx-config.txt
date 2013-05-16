@@ -1,0 +1,47 @@
+upstream memcached {
+    server    127.0.0.1:11211;
+    keepalive 1024;
+}
+
+upstream php {
+    server 127.0.0.1:9000;
+}
+
+server {
+    listen 80;
+    server_name foo.com;
+    root /var/www/foo.com/public;
+    charset utf-8;
+    gzip on;
+    gzip_vary on;
+
+    location / {
+        index index.php;
+        default_type text/html;
+        charset utf-8;
+
+        set $cachable 1;
+        if ($request_method = POST) {
+            set $cachable 0;
+            break;
+        }
+
+        if ($http_cookie ~ "PHPSESSID") {
+            set $cachable 0;
+            break;
+        }
+
+        if ($cachable = 1) {
+            set $memcached_key nginx_foo.com$request_uri?$query_string;
+            memcached_pass memcached;
+        }
+
+        error_page 404 502 504 405 = @php;
+    }
+
+    location @php {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+        fastcgi_pass php;
+    }
+}
